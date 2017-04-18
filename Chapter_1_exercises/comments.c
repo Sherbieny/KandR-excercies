@@ -1,0 +1,80 @@
+/*
+ * A program to remove all comments from a c program
+ * K&R Chapter 1 - Ex.23
+ *
+ * TODO:
+ * 	- read input char by char through getchar() 
+ * 	- handle cases one by one -- putchar() otherwise
+ * 	- cases:
+ * 		1. char is a / --> check next one
+ * 			1-A. next is also / then its a comment --> flag is on
+ * 			1-B. next is * then multicomment --> flag is on
+ * 			1-C. next is normal --> print c and c_next, flag stay off
+ * 			
+ *  		2. char is normal and flag is off --> print c
+ * 		3. char is normal and flag is on --> do not print, basicly no action
+ * 		4. char is * and flag is on --> check next one
+ * 			4-A. next is / then closing tag is found --> flag is off
+ * 			4-B. next is normal --> no action, flag stay on
+ *		5. char is newline and flag is on --> flag is off
+ *
+ *
+ *
+ *
+ *
+ * */
+
+#include<stdio.h>
+
+int main(){
+
+	char c, c_next, c_next_next, nl_handler; // reading characters
+	int newline = 10;
+	int flag = 0; //boolean flag for multiline mode
+
+	while((c = getchar()) != EOF){
+
+		//start case handling
+		//case 1: / found -> check next char
+		if(c == '/' && flag == 0){
+			//get next char			
+			c_next = getchar();
+			//case 1-A || case 1-B
+			if(c_next == '/' || c_next == '*'){
+				
+				//flag on
+				flag = 1;																
+			}
+			//case 1-C
+			else{
+				putchar(c);
+				putchar(c_next);
+			}			
+		}
+		//case 2
+		else if(flag == 0){
+		
+			putchar(c);
+		}
+		//case 4
+		else if(flag == 1 && c == '*'){
+			//get next char
+			c_next = getchar();
+			//case 4-A
+			if(c_next == '/'){
+			
+				flag = 0;
+			}
+		}
+		//case 5
+		else if(flag == 1 && c == newline){
+		
+			flag = 0;
+		}
+
+	}
+	printf("\n\nEnd of Program\n");
+	
+}
+
+
